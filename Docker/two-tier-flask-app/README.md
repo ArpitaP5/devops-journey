@@ -1,130 +1,70 @@
- 
-# Flask App with MySQL Docker Setup
+🐳 2-Tier Flask Application with Docker
 
-This is a simple Flask app that interacts with a MySQL database. The app allows users to submit messages, which are then stored in the database and displayed on the frontend.
+📌 Overview
 
-## Prerequisites
+A 2-tier web application using **Python Flask** as the application layer and **MySQL** as the database layer. The application was containerized and configured using **Docker and Docker Compose**.
 
-Before you begin, make sure you have the following installed:
+🏗️ Architecture
 
-- Docker
-- Git (optional, for cloning the repository)
 
-## Setup
-
-1. Clone this repository (if you haven't already):
-
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd your-repo-name
-   ```
-
-3. Create a `.env` file in the project directory to store your MySQL environment variables:
-
-   ```bash
-   touch .env
-   ```
-
-4. Open the `.env` file and add your MySQL configuration:
-
-   ```
-   MYSQL_HOST=mysql
-   MYSQL_USER=your_username
-   MYSQL_PASSWORD=your_password
-   MYSQL_DB=your_database
-   ```
-
-## Usage
-
-1. Start the containers using Docker Compose:
-
-   ```bash
-   docker-compose up --build
-   ```
-
-2. Access the Flask app in your web browser:
-
-   - Frontend: http://localhost
-   - Backend: http://localhost:5000
-
-3. Create the `messages` table in your MySQL database:
-
-   - Use a MySQL client or tool (e.g., phpMyAdmin) to execute the following SQL commands:
-   
-     ```sql
-     CREATE TABLE messages (
-         id INT AUTO_INCREMENT PRIMARY KEY,
-         message TEXT
-     );
-     ```
-
-4. Interact with the app:
-
-   - Visit http://localhost to see the frontend. You can submit new messages using the form.
-   - Visit http://localhost:5000/insert_sql to insert a message directly into the `messages` table via an SQL query.
-
-## Cleaning Up
-
-To stop and remove the Docker containers, press `Ctrl+C` in the terminal where the containers are running, or use the following command:
-
-```bash
-docker-compose down
+                    👤 USER
+                      │
+                      │ HTTP Request
+                      ▼
+               ┌───────────────┐
+               │    Browser    │
+               └───────┬───────┘
+                       │
+                       │ HTTP
+                       ▼
+        ┌─────────────────────────────┐
+        │       🐳 Docker Environment │
+        │                             │
+        │  ┌───────────────────────┐  │
+        │  │ 🐍 Flask App Container │  │
+        │  │                       │  │
+        │  │    Python + Flask    │  │
+        │  └───────────┬───────────┘  │
+        │              │              │
+        │              │ MySQL        │
+        │              │ Connection   │
+        │              ▼              │
+        │  ┌───────────────────────┐  │
+        │  │ 🗄️ MySQL Container    │  │
+        │  │                       │  │
+        │  │       Database        │  │
+        │  └───────────────────────┘  │
+        │                             │
+        │       🔗 Docker Network     │
+        └─────────────────────────────┘
 ```
 
-## To run this two-tier application using  without docker-compose
+🔄 Application Flow
 
-- First create a docker image from Dockerfile
-```bash
-docker build -t flaskapp .
-```
+**Browser → Flask Application → MySQL Database → Flask Application → Browser**
 
-- Now, make sure that you have created a network using following command
-```bash
-docker network create twotier
-```
+⚙️ Implementation
 
-- Attach both the containers in the same network, so that they can communicate with each other
+🐳 **Containerization:** Created a `Dockerfile` to containerize the Flask application.
+* 🔗 **Multi-Container Setup:** Used Docker Compose to run and manage Flask and MySQL services.
+* 🗄️ **Database Integration:** Configured Flask to communicate with the MySQL container.
+* 📦 **Dependencies:** Managed Python dependencies using `requirements.txt`.
+* 🚫 **Docker Configuration:** Used `.dockerignore` to exclude unnecessary files from the Docker build context.
+* 🔧 **Version Control:** Managed and pushed the project using Git and GitHub.
 
-i) MySQL container 
-```bash
-docker run -d \
-    --name mysql \
-    -v mysql-data:/var/lib/mysql \
-    --network=twotier \
-    -e MYSQL_DATABASE=mydb \
-    -e MYSQL_ROOT_PASSWORD=admin \
-    -p 3306:3306 \
-    mysql:5.7
+## 🛠️ Technologies
 
-```
-ii) Backend container
-```bash
-docker run -d \
-    --name flaskapp \
-    --network=twotier \
-    -e MYSQL_HOST=mysql \
-    -e MYSQL_USER=root \
-    -e MYSQL_PASSWORD=admin \
-    -e MYSQL_DB=mydb \
-    -p 5000:5000 \
-    flaskapp:latest
+**Python | Flask | MySQL | Docker | Docker Compose | Git | GitHub**
 
-```
+## 🧠 Learning Approach
 
-## Notes
+This project was built as a hands-on learning experience to strengthen my understanding of **Docker and DevOps workflows**.
 
-- Make sure to replace placeholders (e.g., `your_username`, `your_password`, `your_database`) with your actual MySQL configuration.
+I used **AI-assisted resources as an interactive learning partner** to understand containerization concepts, plan implementation steps, and troubleshoot configuration issues.
 
-- This is a basic setup for demonstration purposes. In a production environment, you should follow best practices for security and performance.
+To build practical understanding, I independently:
 
-- Be cautious when executing SQL queries directly. Validate and sanitize user inputs to prevent vulnerabilities like SQL injection.
-
-- If you encounter issues, check Docker logs and error messages for troubleshooting.
-
-```
-
+* 💻 Implemented and tested the configurations.
+* 🔍 Analyzed the purpose and reasoning behind each command.
+* 🌐 Verified communication between the application and database containers.
+* 🧪 Tested the application and validated the Docker setup.
