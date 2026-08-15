@@ -59,4 +59,5 @@ Browser → Flask Application → MySQL Database
 Python | Flask | MySQL | Docker | Docker Compose | Git | GitHub
 
 🧠 Learning Approach 
+
 This project was built as a hands-on learning experience to master Docker and DevOps workflows. I utilized AI-assisted resources as an interactive learning partner to break down complex containerization concepts, plan deployment steps, and troubleshoot configurations.
